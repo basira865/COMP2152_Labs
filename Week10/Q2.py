@@ -45,8 +45,8 @@ def record_attempt(username, success):
     conn=sqlite3.connect(DB_NAME)
     cursor=conn.cursor()
     cursor.execute(
-        "INSERT INTO login_attempts (username, success, attempt_data) VALUES(?, ?, ?)",
-        (username,success,str(datetime.datetime.now))
+        "INSERT INTO login_attempts (username, success, attempt_date) VALUES(?, ?, ?)",
+        (username,success,str(datetime.datetime.now()))
     )
     conn.commit()
     conn.close()
@@ -78,7 +78,7 @@ def count_failures_per_user():
     conn=sqlite3.connect(DB_NAME)
     cursor=conn.cursor()
     cursor.execute(
-        "SELECT usernames, COUNT(*) FROM logit_attempt WHERE success =0 GROUP BY username"
+        "SELECT username, COUNT(*) FROM login_attempts WHERE success =0 GROUP BY username"
     )
     rows=cursor.fetchall()
     conn.close()
